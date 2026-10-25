@@ -25,19 +25,26 @@ function parseEnv(content) {
   return out;
 }
 
-let wallet =
-  "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh";
+const defaults = {
+  WALLET_ETH: "0x0000000000000000000000000000000000000000",
+  WALLET_USDT_ETH: "0x0000000000000000000000000000000000000000",
+};
+
+let walletEth = defaults.WALLET_ETH;
+let walletUsdtEth = defaults.WALLET_USDT_ETH;
 
 if (fs.existsSync(envPath)) {
   const env = parseEnv(fs.readFileSync(envPath, "utf8"));
-  if (env.WALLET_ADDRESS) wallet = env.WALLET_ADDRESS;
+  if (env.WALLET_ETH) walletEth = env.WALLET_ETH;
+  if (env.WALLET_USDT_ETH) walletUsdtEth = env.WALLET_USDT_ETH;
 } else {
-  console.warn("No .env found — using default sample WALLET_ADDRESS.");
+  console.warn("No .env found — set WALLET_ETH and WALLET_USDT_ETH.");
 }
 
 const js = `/* Generated from .env — run: npm run config */
 window.SITE_CONFIG = Object.freeze({
-  walletAddress: ${JSON.stringify(wallet)},
+  walletEth: ${JSON.stringify(walletEth)},
+  walletUsdtEth: ${JSON.stringify(walletUsdtEth)},
 });
 `;
 

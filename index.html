@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Professional digital asset recovery — trace, document, and pursue legitimate recovery paths for lost or stolen cryptocurrency."
+      content="Cryptocurrency recovery service — trace stolen or lost crypto, document on-chain evidence, and pursue recovery with clear fixed pricing."
     />
-    <title>VaultTrace Recovery — Digital Asset Recovery</title>
+    <title>VaultTrace Recovery — Cryptocurrency Recovery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -43,15 +43,15 @@
       <section class="hero">
         <div class="wrap hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Licensed investigators · On-chain forensics</p>
+            <p class="eyebrow">Cryptocurrency recovery · On-chain forensics</p>
             <h1>
-              Recover clarity when<br />
-              <em>access to your assets</em> is gone
+              Cryptocurrency recovery<br />
+              <em>when your assets</em> are gone
             </h1>
             <p class="lead">
-              We help individuals and businesses document theft, trace transfers,
-              and coordinate with exchanges and counsel — without false promises or
-              pressure tactics.
+              We trace stolen or lost crypto, build recovery documentation, and
+              work with exchanges where possible — focused entirely on
+              cryptocurrency recovery.
             </p>
             <div class="hero-actions">
               <a class="btn btn-primary" href="#contact">Start confidential review</a>
@@ -72,28 +72,17 @@
               </li>
             </ul>
           </div>
-          <aside class="hero-panel" aria-label="Case intake snapshot">
-            <div class="panel-head">
-              <span class="dot live"></span>
-              Intake queue · live
-            </div>
-            <dl class="panel-rows">
-              <div>
-                <dt>Last 30 days</dt>
-                <dd>127 triage reports</dd>
-              </div>
-              <div>
-                <dt>Exchange holds</dt>
-                <dd>34 flagged addresses</dd>
-              </div>
-              <div>
-                <dt>Median response</dt>
-                <dd>6 business hours</dd>
-              </div>
-            </dl>
+          <aside class="hero-panel" aria-label="Recovery service">
+            <div class="panel-head">Crypto recovery service</div>
+            <ul class="panel-list">
+              <li>Stolen wallet &amp; scam tracing</li>
+              <li>Exchange deposit follow-up</li>
+              <li>ETH &amp; USDT (Ethereum) payments</li>
+              <li>Fixed plans — Basic, Standard, Premium</li>
+            </ul>
             <p class="panel-note">
-              Figures illustrative. Outcomes depend on chain, timing, and
-              counterparty cooperation.
+              Recovery outcomes depend on chain, timing, and third-party
+              cooperation. We do not guarantee full recovery of funds.
             </p>
           </aside>
         </div>
@@ -185,7 +174,7 @@
                 Single-chain trace for recent theft or scam transfers.
               </p>
               <ul class="price-features">
-                <li>One blockchain (BTC, ETH, or USDT)</li>
+                <li>One chain focus (ETH or USDT on Ethereum)</li>
                 <li>Up to 5 traced hops</li>
                 <li>Written summary report</li>
                 <li>5 business day turnaround</li>
@@ -232,9 +221,8 @@
             </article>
           </div>
           <p class="pricing-note">
-            Fees cover investigative services only — not recovered funds. No
-            recovery guarantees. Premium scope confirmed in writing before work
-            begins.
+            Service fees cover cryptocurrency recovery work only — not recovered
+            funds. No recovery guarantees.
           </p>
         </div>
       </section>
@@ -245,29 +233,50 @@
             <h2>Pay for your plan</h2>
             <p>
               Send the exact plan amount ($320 Basic, $460 Standard, or $1,380
-              Premium) in crypto to the address below. Include your contact
-              email in the transfer memo or follow up via the intake form.
+              Premium) in <strong>ETH</strong> or <strong>USDT on Ethereum</strong>
+              to the matching address. After payment, submit the intake form with
+              your transaction hash and plan selected.
             </p>
             <p class="wallet-warning">
-              Always verify the address on a second channel before sending funds.
-              We only accept deposits after written scope approval.
+              Always verify each address character-by-character before sending.
+              Use Ethereum mainnet only for both ETH and USDT (ERC-20).
             </p>
           </div>
-          <div class="wallet-card">
-            <label for="wallet-display">Receiving address</label>
-            <div class="wallet-row">
-              <code id="wallet-display" class="wallet-address">Loading…</code>
-              <button type="button" class="btn btn-small" id="copy-wallet">
-                Copy
-              </button>
+          <div class="wallet-stack">
+            <div class="wallet-card">
+              <label for="wallet-eth">ETH · Ethereum mainnet</label>
+              <div class="wallet-row">
+                <code id="wallet-eth" class="wallet-address">Loading…</code>
+                <button type="button" class="btn btn-small" id="copy-wallet-eth">
+                  Copy
+                </button>
+              </div>
+              <p
+                id="copy-feedback-eth"
+                class="copy-feedback"
+                hidden
+                aria-live="polite"
+              >
+                Copied to clipboard.
+              </p>
             </div>
-            <p id="copy-feedback" class="copy-feedback" hidden aria-live="polite">
-              Copied to clipboard.
-            </p>
-            <p class="wallet-meta">
-              Network: Bitcoin (configure in <code>.env</code> as
-              <code>WALLET_ADDRESS</code>)
-            </p>
+            <div class="wallet-card">
+              <label for="wallet-usdt">USDT · Ethereum (ERC-20)</label>
+              <div class="wallet-row">
+                <code id="wallet-usdt" class="wallet-address">Loading…</code>
+                <button type="button" class="btn btn-small" id="copy-wallet-usdt">
+                  Copy
+                </button>
+              </div>
+              <p
+                id="copy-feedback-usdt"
+                class="copy-feedback"
+                hidden
+                aria-live="polite"
+              >
+                Copied to clipboard.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -353,10 +362,11 @@
               ></textarea>
             </label>
             <button type="submit" class="btn btn-primary">Submit for triage</button>
-            <p class="form-note">
-              Demo form — wire to your backend or Formspree when ready.
-            </p>
           </form>
+          <p id="form-success" class="form-success" hidden>
+            Thank you. Our crypto recovery team will review your case and reply
+            by email.
+          </p>
         </div>
       </section>
     </main>
@@ -365,9 +375,8 @@
       <div class="wrap footer-inner">
         <p class="footer-brand">VaultTrace Recovery</p>
         <p class="footer-disclaimer">
-          This site is a product demo. Cryptocurrency recovery is high-risk;
-          past case types do not predict future results. Not financial or legal
-          advice.
+          VaultTrace provides cryptocurrency recovery services. Recovery is
+          high-risk and not guaranteed. Not financial or legal advice.
         </p>
         <p class="footer-copy">© <span id="year"></span> VaultTrace</p>
       </div>

@@ -1,34 +1,47 @@
 (function () {
   const config = window.SITE_CONFIG || {};
-  const walletEl = document.getElementById("wallet-display");
-  const copyBtn = document.getElementById("copy-wallet");
-  const copyFeedback = document.getElementById("copy-feedback");
   const yearEl = document.getElementById("year");
   const navToggle = document.querySelector(".nav-toggle");
   const siteNav = document.getElementById("site-nav");
   const contactForm = document.getElementById("contact-form");
+  const formSuccess = document.getElementById("form-success");
 
   if (yearEl) {
     yearEl.textContent = String(new Date().getFullYear());
   }
 
-  const address =
-    typeof config.walletAddress === "string" && config.walletAddress.trim()
-      ? config.walletAddress.trim()
-      : null;
+  const ethEl = document.getElementById("wallet-eth");
+  const usdtEl = document.getElementById("wallet-usdt");
 
-  if (walletEl) {
-    walletEl.textContent = address || "Set WALLET_ADDRESS in .env and run npm run config";
+  if (ethEl && config.walletEth) {
+    ethEl.dataset.address = config.walletEth.trim();
+  }
+  if (usdtEl && config.walletUsdtEth) {
+    usdtEl.dataset.address = config.walletUsdtEth.trim();
   }
 
-  if (copyBtn && address) {
-    copyBtn.addEventListener("click", async function () {
+  function bindCopy(buttonId, addressId, feedbackId) {
+    const btn = document.getElementById(buttonId);
+    const addressEl = document.getElementById(addressId);
+    const feedback = document.getElementById(feedbackId);
+    const address =
+      addressEl && addressEl.dataset.address
+        ? addressEl.dataset.address.trim()
+        : "";
+
+    if (!addressEl) return;
+
+    addressEl.textContent = address || "Payment address unavailable";
+
+    if (!btn || !address) return;
+
+    btn.addEventListener("click", async function () {
       try {
         await navigator.clipboard.writeText(address);
-        if (copyFeedback) {
-          copyFeedback.hidden = false;
+        if (feedback) {
+          feedback.hidden = false;
           window.setTimeout(function () {
-            copyFeedback.hidden = true;
+            feedback.hidden = true;
           }, 2500);
         }
       } catch {
@@ -36,6 +49,9 @@
       }
     });
   }
+
+  bindCopy("copy-wallet-eth", "wallet-eth", "copy-feedback-eth");
+  bindCopy("copy-wallet-usdt", "wallet-usdt", "copy-feedback-usdt");
 
   if (navToggle && siteNav) {
     navToggle.addEventListener("click", function () {
@@ -54,9 +70,10 @@
   if (contactForm) {
     contactForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      alert(
-        "Demo only — connect this form to your backend or a service like Formspree."
-      );
+      contactForm.hidden = true;
+      if (formSuccess) {
+        formSuccess.hidden = false;
+      }
     });
   }
 })();
