@@ -1,0 +1,11 @@
+{
+  "name": "barca-landing",
+  "private": true,
+  "scripts": {
+    "config": "node scripts/inject-env.js",
+    "predev": "npm run config",
+    "dev": "npx --yes serve . -p 3000",
+    "prebuild": "npm run config",
+    "build": "node scripts/build-static.js"
+  }
+}
