@@ -399,6 +399,12 @@ a:hover {
   align-items: stretch;
 }
 
+.pricing-grid-two {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 52rem;
+  margin-inline: auto;
+}
+
 .price-card {
   position: relative;
   display: flex;
