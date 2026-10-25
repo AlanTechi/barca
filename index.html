@@ -32,7 +32,7 @@
           <a href="#process">Process</a>
           <a href="#cases">What we handle</a>
           <a href="#pricing">Pricing</a>
-          <a href="#wallet">Payment</a>
+          <a href="#payment">Payment</a>
           <a href="#faq">FAQ</a>
           <a class="nav-cta" href="#contact">Request review</a>
         </nav>
@@ -159,8 +159,8 @@
           <header class="section-head section-head-center">
             <h2>Crypto recovery service fees</h2>
             <p>
-              Fixed USD pricing for investigation and trace work. Select a plan,
-              then pay to the wallet below to open your case file.
+              Fixed USD pricing for crypto recovery. Select a plan — we will ask
+              for your name and email, then show payment details.
             </p>
           </header>
           <div class="pricing-grid pricing-grid-two">
@@ -180,7 +180,15 @@
                 <li>Law-enforcement-ready PDF dossier</li>
                 <li>3 business day priority turnaround</li>
               </ul>
-              <a class="btn btn-ghost price-cta" href="#wallet">Pay &amp; start Standard</a>
+              <button
+                type="button"
+                class="btn btn-ghost price-cta js-start-payment"
+                data-plan-id="standard"
+                data-plan-name="Standard"
+                data-plan-amount="460"
+              >
+                Pay &amp; start Standard
+              </button>
             </article>
             <article class="price-card price-card-featured">
               <p class="price-badge">Most selected</p>
@@ -199,7 +207,15 @@
                 <li>Direct exchange escalation drafting</li>
                 <li>Dedicated analyst · 30-day monitoring</li>
               </ul>
-              <a class="btn btn-primary price-cta" href="#wallet">Pay &amp; start Premium</a>
+              <button
+                type="button"
+                class="btn btn-primary price-cta js-start-payment"
+                data-plan-id="premium"
+                data-plan-name="Premium"
+                data-plan-amount="1380"
+              >
+                Pay &amp; start Premium
+              </button>
             </article>
           </div>
           <p class="pricing-note">
@@ -209,54 +225,157 @@
         </div>
       </section>
 
-      <section id="wallet" class="section wallet-section">
-        <div class="wrap wallet-grid">
-          <div>
-            <h2>Pay for your plan</h2>
-            <p>
-              Send the exact plan amount ($460 Standard or $1,380 Premium) in
-              <strong>ETH</strong> or <strong>USDT on Ethereum</strong>
-              to the matching address. After payment, submit the intake form with
-              your transaction hash and plan selected.
-            </p>
-            <p class="wallet-warning">
-              Always verify each address character-by-character before sending.
-              Use Ethereum mainnet only for both ETH and USDT (ERC-20).
-            </p>
-          </div>
-          <div class="wallet-stack">
-            <div class="wallet-card">
-              <label for="wallet-eth">ETH · Ethereum mainnet</label>
-              <div class="wallet-row">
-                <code id="wallet-eth" class="wallet-address">Loading…</code>
-                <button type="button" class="btn btn-small" id="copy-wallet-eth">
-                  Copy
-                </button>
-              </div>
-              <p
-                id="copy-feedback-eth"
-                class="copy-feedback"
-                hidden
-                aria-live="polite"
-              >
-                Copied to clipboard.
+      <section id="payment" class="section payment-section">
+        <div class="wrap">
+          <div class="payment-shell">
+            <ol class="payment-progress" aria-label="Checkout steps">
+              <li class="payment-progress-item is-active" data-progress="1">
+                Your details
+              </li>
+              <li class="payment-progress-item" data-progress="2">Payment</li>
+              <li class="payment-progress-item" data-progress="3">Done</li>
+            </ol>
+
+            <div id="payment-idle" class="payment-pane payment-idle">
+              <h2>Checkout</h2>
+              <p>
+                Click <strong>Pay &amp; start</strong> on Standard or Premium to
+                enter your name and email, then complete payment.
               </p>
             </div>
-            <div class="wallet-card">
-              <label for="wallet-usdt">USDT · Ethereum (ERC-20)</label>
-              <div class="wallet-row">
-                <code id="wallet-usdt" class="wallet-address">Loading…</code>
-                <button type="button" class="btn btn-small" id="copy-wallet-usdt">
-                  Copy
+
+            <div id="payment-step-details" class="payment-pane" hidden>
+              <h2>Your details</h2>
+              <p class="payment-sub">
+                We use this to match your payment and send confirmation.
+              </p>
+              <p class="payment-plan-chip" id="payment-plan-chip"></p>
+              <form class="payment-form" id="payment-details-form">
+                <label>
+                  Full name
+                  <input
+                    type="text"
+                    name="payer_name"
+                    id="payer-name"
+                    required
+                    autocomplete="name"
+                  />
+                </label>
+                <label>
+                  Email
+                  <input
+                    type="email"
+                    name="payer_email"
+                    id="payer-email"
+                    required
+                    autocomplete="email"
+                  />
+                </label>
+                <button type="submit" class="btn btn-primary">
+                  Continue to payment
+                </button>
+              </form>
+            </div>
+
+            <div id="payment-step-pay" class="payment-pane" hidden>
+              <h2>Complete payment</h2>
+              <div class="payment-summary">
+                <div class="payment-summary-row">
+                  <span>Name</span>
+                  <strong id="summary-name"></strong>
+                </div>
+                <div class="payment-summary-row">
+                  <span>Email</span>
+                  <strong id="summary-email"></strong>
+                </div>
+                <div class="payment-summary-row">
+                  <span>Plan</span>
+                  <strong id="summary-plan"></strong>
+                </div>
+                <div class="payment-summary-row payment-summary-total">
+                  <span>Amount due</span>
+                  <strong id="summary-amount"></strong>
+                </div>
+              </div>
+              <p class="payment-pay-note">
+                Send the <strong>exact USD equivalent</strong> of your plan in
+                <strong>ETH</strong> or <strong>USDT (Ethereum ERC-20)</strong>.
+                Ethereum mainnet only.
+              </p>
+              <div class="wallet-stack">
+                <div class="wallet-card">
+                  <label for="wallet-eth">ETH · Ethereum mainnet</label>
+                  <div class="wallet-row">
+                    <code id="wallet-eth" class="wallet-address">Loading…</code>
+                    <button
+                      type="button"
+                      class="btn btn-small"
+                      id="copy-wallet-eth"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <p
+                    id="copy-feedback-eth"
+                    class="copy-feedback"
+                    hidden
+                    aria-live="polite"
+                  >
+                    Copied to clipboard.
+                  </p>
+                </div>
+                <div class="wallet-card">
+                  <label for="wallet-usdt">USDT · Ethereum (ERC-20)</label>
+                  <div class="wallet-row">
+                    <code id="wallet-usdt" class="wallet-address">Loading…</code>
+                    <button
+                      type="button"
+                      class="btn btn-small"
+                      id="copy-wallet-usdt"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                  <p
+                    id="copy-feedback-usdt"
+                    class="copy-feedback"
+                    hidden
+                    aria-live="polite"
+                  >
+                    Copied to clipboard.
+                  </p>
+                </div>
+              </div>
+              <p class="wallet-warning">
+                Verify each address carefully before sending. Double-check network
+                and token (USDT must be ERC-20 on Ethereum).
+              </p>
+              <div class="payment-actions">
+                <button
+                  type="button"
+                  class="btn btn-ghost"
+                  id="payment-back-details"
+                >
+                  Back
+                </button>
+                <button type="button" class="btn btn-primary" id="payment-sent">
+                  I have sent payment
                 </button>
               </div>
-              <p
-                id="copy-feedback-usdt"
-                class="copy-feedback"
-                hidden
-                aria-live="polite"
-              >
-                Copied to clipboard.
+            </div>
+
+            <div id="payment-step-done" class="payment-pane payment-done" hidden>
+              <div class="payment-done-icon" aria-hidden="true">✓</div>
+              <h2>Payment submitted</h2>
+              <p class="payment-done-lead">
+                Once we confirm your payment, you will receive an email from us.
+              </p>
+              <p class="payment-done-timing">
+                Confirmation usually takes <strong>10 to 20 minutes</strong>.
+              </p>
+              <p class="payment-done-note">
+                If you do not hear from us after that window, check spam or
+                contact us with the same email you used at checkout.
               </p>
             </div>
           </div>
