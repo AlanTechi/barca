@@ -30,18 +30,32 @@ const defaults = {
   WALLET_USDT_ETH: "0x0000000000000000000000000000000000000000",
 };
 
-let walletEth = defaults.WALLET_ETH;
-let walletUsdtEth = defaults.WALLET_USDT_ETH;
+const fromFile = fs.existsSync(envPath)
+  ? parseEnv(fs.readFileSync(envPath, "utf8"))
+  : {};
 
-if (fs.existsSync(envPath)) {
-  const env = parseEnv(fs.readFileSync(envPath, "utf8"));
-  if (env.WALLET_ETH) walletEth = env.WALLET_ETH;
-  if (env.WALLET_USDT_ETH) walletUsdtEth = env.WALLET_USDT_ETH;
-} else {
-  console.warn("No .env found — set WALLET_ETH and WALLET_USDT_ETH.");
+/** Cloudflare/Vercel/etc. inject build env into process.env (no .env file). */
+function pick(key) {
+  const fromProcess = process.env[key];
+  if (fromProcess && String(fromProcess).trim()) {
+    return String(fromProcess).trim();
+  }
+  if (fromFile[key] && String(fromFile[key]).trim()) {
+    return String(fromFile[key]).trim();
+  }
+  return defaults[key];
 }
 
-const js = `/* Generated from .env — run: npm run config */
+const walletEth = pick("WALLET_ETH");
+const walletUsdtEth = pick("WALLET_USDT_ETH");
+
+if (walletEth === defaults.WALLET_ETH) {
+  console.warn(
+    "WALLET_ETH not set — use .env locally or build variables on Cloudflare."
+  );
+}
+
+const js = `/* Generated at build — run: npm run config */
 window.SITE_CONFIG = Object.freeze({
   walletEth: ${JSON.stringify(walletEth)},
   walletUsdtEth: ${JSON.stringify(walletUsdtEth)},
@@ -50,4 +64,6 @@ window.SITE_CONFIG = Object.freeze({
 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, js, "utf8");
-console.log("Wrote js/config.js");
+console.log(
+  "Wrote js/config.js (ETH …" + walletEth.slice(-4) + ")"
+);
