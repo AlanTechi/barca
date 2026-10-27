@@ -6,6 +6,10 @@
     "predev": "npm run config",
     "dev": "npx --yes serve . -p 3000",
     "prebuild": "npm run config",
-    "build": "node scripts/build-static.js"
+    "build": "node scripts/build-static.js",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "4.54.0"
   }
 }
