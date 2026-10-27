@@ -10,6 +10,9 @@
   const paymentStepDetails = document.getElementById("payment-step-details");
   const paymentStepPay = document.getElementById("payment-step-pay");
   const paymentStepDone = document.getElementById("payment-step-done");
+  const paymentStepUnavailable = document.getElementById("payment-step-unavailable");
+  const paymentUnavailablePlan = document.getElementById("payment-unavailable-plan");
+  const paymentUnavailableBack = document.getElementById("payment-unavailable-back");
   const paymentDetailsForm = document.getElementById("payment-details-form");
   const paymentPlanChip = document.getElementById("payment-plan-chip");
   const paymentBackDetails = document.getElementById("payment-back-details");
@@ -80,11 +83,15 @@
   }
 
   function hideAllPaymentPanes() {
-    [paymentIdle, paymentStepDetails, paymentStepPay, paymentStepDone].forEach(
-      function (el) {
-        if (el) el.hidden = true;
-      }
-    );
+    [
+      paymentIdle,
+      paymentStepUnavailable,
+      paymentStepDetails,
+      paymentStepPay,
+      paymentStepDone,
+    ].forEach(function (el) {
+      if (el) el.hidden = true;
+    });
   }
 
   function showPaymentStep(step) {
@@ -118,10 +125,35 @@
     return "$" + amount + " USD";
   }
 
+  function showPaymentUnavailable(planName) {
+    hideAllPaymentPanes();
+    progressItems.forEach(function (item) {
+      item.classList.remove("is-active", "is-done");
+    });
+    if (paymentUnavailablePlan) {
+      paymentUnavailablePlan.textContent = planName
+        ? planName + " is not accepting new cases right now."
+        : "";
+    }
+    if (paymentStepUnavailable) {
+      paymentStepUnavailable.hidden = false;
+    }
+    const section = document.getElementById("payment");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   function startCheckoutFromButton(btn) {
     checkout.planId = btn.getAttribute("data-plan-id") || "";
     checkout.planName = btn.getAttribute("data-plan-name") || "";
     checkout.planAmount = btn.getAttribute("data-plan-amount") || "";
+
+    const available = btn.getAttribute("data-plan-available");
+    if (available === "false") {
+      showPaymentUnavailable(checkout.planName);
+      return;
+    }
 
     if (paymentPlanChip) {
       paymentPlanChip.textContent =
@@ -174,6 +206,16 @@
   if (paymentBackDetails) {
     paymentBackDetails.addEventListener("click", function () {
       showPaymentStep(1);
+    });
+  }
+
+  if (paymentUnavailableBack) {
+    paymentUnavailableBack.addEventListener("click", function () {
+      hideAllPaymentPanes();
+      if (paymentIdle) paymentIdle.hidden = false;
+      progressItems.forEach(function (item) {
+        item.classList.remove("is-active", "is-done");
+      });
     });
   }
 

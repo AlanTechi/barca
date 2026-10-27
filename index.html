@@ -78,7 +78,7 @@
               <li>Stolen wallet &amp; scam tracing</li>
               <li>Exchange deposit follow-up</li>
               <li>ETH &amp; USDT (Ethereum) payments</li>
-              <li>Premium recovery plan — $1,380</li>
+              <li>Standard &amp; Premium recovery plans</li>
             </ul>
             <p class="panel-note">
               Recovery outcomes depend on chain, timing, and third-party
@@ -159,12 +159,40 @@
           <header class="section-head section-head-center">
             <h2>Crypto recovery service fees</h2>
             <p>
-              One premium crypto recovery package. We will ask for your name and
-              email, then show payment details.
+              Choose a plan below. We will ask for your name and email before
+              payment — when the plan is open for new cases.
             </p>
           </header>
-          <div class="pricing-grid pricing-grid-single">
+          <div class="pricing-grid pricing-grid-two">
+            <article class="price-card">
+              <h3>Standard</h3>
+              <p class="price">
+                <span class="price-amount">$460</span>
+                <span class="price-unit">USD</span>
+              </p>
+              <p class="price-blurb">
+                Deeper analysis with exchange tagging and escalation pack.
+              </p>
+              <ul class="price-features">
+                <li>Single-chain crypto recovery trace</li>
+                <li>Up to 15 traced hops</li>
+                <li>Exchange / mixer tagging where available</li>
+                <li>Law-enforcement-ready PDF dossier</li>
+                <li>3 business day priority turnaround</li>
+              </ul>
+              <button
+                type="button"
+                class="btn btn-ghost price-cta js-start-payment"
+                data-plan-id="standard"
+                data-plan-name="Standard"
+                data-plan-amount="460"
+                data-plan-available="false"
+              >
+                Pay &amp; start Standard
+              </button>
+            </article>
             <article class="price-card price-card-featured">
+              <p class="price-badge">Available now</p>
               <h3>Premium</h3>
               <p class="price">
                 <span class="price-amount">$1,380</span>
@@ -186,6 +214,7 @@
                 data-plan-id="premium"
                 data-plan-name="Premium"
                 data-plan-amount="1380"
+                data-plan-available="true"
               >
                 Pay &amp; start Premium
               </button>
@@ -212,9 +241,24 @@
             <div id="payment-idle" class="payment-pane payment-idle">
               <h2>Checkout</h2>
               <p>
-                Click <strong>Pay &amp; start Premium</strong> above to enter your
-                name and email, then complete payment.
+                Select <strong>Standard</strong> or <strong>Premium</strong> above
+                to begin checkout when that plan is open.
               </p>
+            </div>
+
+            <div id="payment-step-unavailable" class="payment-pane payment-unavailable" hidden>
+              <h2>Plan not available</h2>
+              <p class="payment-unavailable-lead">
+                This scope is not available at the moment. Please check our other
+                plans.
+              </p>
+              <p class="payment-unavailable-plan" id="payment-unavailable-plan"></p>
+              <div class="payment-actions">
+                <a class="btn btn-primary" href="#pricing">View other plans</a>
+                <button type="button" class="btn btn-ghost" id="payment-unavailable-back">
+                  Back to checkout
+                </button>
+              </div>
             </div>
 
             <div id="payment-step-details" class="payment-pane" hidden>
@@ -376,11 +420,13 @@
               </p>
             </details>
             <details>
-              <summary>What does Premium include?</summary>
+              <summary>What do Standard and Premium include?</summary>
               <p>
-                Premium ($1,380) covers full crypto recovery investigation:
-                multi-chain tracing, exchange escalation support, a dedicated
-                analyst, and 30-day monitoring — see pricing for the full list.
+                Standard ($460) covers a focused trace with exchange tagging and a
+                formal dossier when that scope is open. Premium ($1,380) adds
+                multi-chain work, a dedicated analyst, and 30-day monitoring.
+                If checkout says a plan is not available, choose another plan on
+                the pricing page.
               </p>
             </details>
             <details>

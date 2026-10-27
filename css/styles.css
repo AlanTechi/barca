@@ -727,6 +727,18 @@ a:hover {
   margin: 0 0 1rem;
 }
 
+.payment-unavailable-lead {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+}
+
+.payment-unavailable-plan {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 1.5rem;
+}
+
 .wallet-section p {
   color: var(--text-muted);
 }
